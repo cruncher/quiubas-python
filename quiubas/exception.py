@@ -1,5 +1,4 @@
 
 
-class error( Exception ):
-	pass
-
+class error(Exception):
+    pass

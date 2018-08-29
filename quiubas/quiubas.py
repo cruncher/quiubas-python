@@ -1,61 +1,63 @@
 import re
 import urllib
-from network import network
-from balance import balance
-from callback import callback
-from keywords import keywords
-from sms import sms
-from mnp import mnp
-from shortcodes import shortcodes
+from .network import network
+from .balance import balance
+from .callback import callback
+from .keywords import keywords
+from .sms import sms
+from .mnp import mnp
+from .shortcodes import shortcodes
+
 
 class Quiubas:
-	def __init__( self ):
-		self.lib_version		= '1.0.3'
-		self.api_key			= None
-		self.api_private		= None
-		self.base_url			= 'https://api.quiubas.com'
-		self.version			= '2.0'
 
-		self.network = network( self )
+    def __init__(self):
+        self.lib_version = '1.0.3'
+        self.api_key = None
+        self.api_private = None
+        self.base_url = 'https://api.quiubas.com'
+        self.version = '2.0'
 
-		self.balance = balance( self )
-		self.callback = callback( self )
-		self.keywords = keywords( self )
-		self.sms = sms( self )
-		self.mnp = mnp( self )
-		self.shortcodes = shortcodes( self )
+        self.network = network(self)
 
-	def setBaseURL( self, url ):
-		self.base_url = url
-		return self.base_url
+        self.balance = balance(self)
+        self.callback = callback(self)
+        self.keywords = keywords(self)
+        self.sms = sms(self)
+        self.mnp = mnp(self)
+        self.shortcodes = shortcodes(self)
 
-	def getBaseURL( self ):
-		return self.base_url
+    def setBaseURL(self, url):
+        self.base_url = url
+        return self.base_url
 
-	def setAuth( self, api_key, api_private ):
-		self.api_key = api_key
-		self.api_private = api_private
+    def getBaseURL(self):
+        return self.base_url
 
-	def getAuth( self ):
-		return {
-			'api_key': self.api_key,
-			'api_private': self.api_private
-		}
+    def setAuth(self, api_key, api_private):
+        self.api_key = api_key
+        self.api_private = api_private
 
-	def format(self, path, vars = None):
-		if not vars:
-			vars = dict()
+    def getAuth(self):
+        return {
+            'api_key': self.api_key,
+            'api_private': self.api_private
+        }
 
-		parsed_vars = dict()
+    def format(self, path, vars=None):
+        if not vars:
+            vars = dict()
 
-		for k in vars.keys():
-			if vars[k] is not None:
-				parsed_vars['{' + k + '}'] = urllib.quote_plus(vars[k])
+        parsed_vars = dict()
 
-		regex = re.compile("(%s)" % "|".join(map(re.escape, parsed_vars.keys())))
+        for k in vars.keys():
+            if vars[k] is not None:
+                parsed_vars['{' + k + '}'] = urllib.quote_plus(vars[k])
 
-		if len(parsed_vars) != 0:
-			return regex.sub(lambda mo: str(parsed_vars[mo.string[mo.start():mo.end()]]), path)
-		else:
-			return path
+        regex = re.compile("(%s)" % "|".join(
+            map(re.escape, parsed_vars.keys())))
 
+        if len(parsed_vars) != 0:
+            return regex.sub(lambda mo: str(parsed_vars[mo.string[mo.start():mo.end()]]), path)
+        else:
+            return path

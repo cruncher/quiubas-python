@@ -1,4 +1,3 @@
-import os
-import glob
-from quiubas import Quiubas
-
+import os  # noqa
+import glob  # noqa
+from .quiubas import Quiubas  # noqa
